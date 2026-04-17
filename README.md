@@ -211,7 +211,22 @@ P2P-Bridge/
 | `tools/eval_guidance_ablation.py` | Guidance mechanism comparison |
 | `tools/eval_score_as_normal.py` | Score-as-normal validation |
 
+## Built Upon
+
+This project extends [**P2P-Bridge**](https://github.com/matvogel/P2P-Bridge) (Vogel et al., ECCV 2024), which introduced Diffusion Schr&ouml;dinger Bridges for point cloud denoising. The original P2P-Bridge code (`models/`, `dataloaders/`, `train.py`, `evaluate_objects.py`, etc.) is released under the MIT License by the original authors. **Our contributions** are in:
+
+| Directory / File | Contribution |
+|---|---|
+| `sb_cover/` | SB-IGV framework: bridge model, guided sampling, orthogonal projection, IGV losses, training loop |
+| `metrics/geometric_metrics.py` | Novel VD and IGSD metrics |
+| `tools/` | All ablation and analysis scripts |
+| `configs/shapenet_denoise_sb_igv.yaml` | SB-IGV training configuration |
+| `train_sb_igv.py` | SB-IGV training entry point |
+| `scripts/reproduce_all.sh` | One-command reproduction |
+
 ## Citation
+
+If you use this code, please cite both works:
 
 ```bibtex
 @inproceedings{vogel2024p2pbridge,
@@ -225,8 +240,4 @@ P2P-Bridge/
 
 ## License
 
-This project is released under the [MIT License](LICENSE).
-
-## Acknowledgements
-
-This codebase builds upon [P2P-Bridge](https://github.com/matvogel/P2P-Bridge) (ECCV 2024). We thank the original authors for their excellent work and open-source release.
+This project is released under the [MIT License](LICENSE), consistent with the original [P2P-Bridge](https://github.com/matvogel/P2P-Bridge) license.
