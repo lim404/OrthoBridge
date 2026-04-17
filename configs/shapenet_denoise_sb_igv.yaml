@@ -1,0 +1,160 @@
+data:
+  data_dir: /mnt/a/Users/Administrator/PycharmProjects/ECCV/data/objects/
+  dataset: PUNet
+  augment: true
+  use_rgb_features: false
+  workers: 4
+  npoints: 2048
+  noise_min: 0.01                                # match pretrained PVDS_PUNet [0.01, 0.02]
+  noise_max: 0.02                                # match pretrained PVDS_PUNet [0.01, 0.02]
+  num_patches: 30
+
+model:
+  type: PVD
+  ema: true
+  in_dim: 3
+  out_dim: 3
+  extra_feature_channels: 0
+  time_embed_dim: 64
+  dropout: 0.15                              # match pretrained PVDS_PUNet
+  mask_ratio: 0.0                            # no MAE masking for denoising
+  num_centers: 128
+  sb_objective: pred_noise                   # match pretrained PVDS_PUNet
+  EMA:
+    decay: 0.999
+  PVD:
+    use_global_embedding: true
+    global_embedding_dim: 1024
+    feat_embed_dim: 32                       # match pretrained PVDS_PUNet
+    attention_type: linear
+    attention_heads: 4                       # match pretrained PVDS_PUNet
+    size: large
+    attentions:
+    - 0
+    - 0
+    - 0
+    - 1
+    channels:                                # match pretrained PVDS_PUNet
+    - 32
+    - 64
+    - 128
+    - 256
+    - 512
+    voxel_resolutions:
+    - 32
+    - 16
+    - 8
+    - 8
+    n_sa_blocks:                             # match pretrained PVDS_PUNet
+    - 1
+    - 2
+    - 1
+    - 1
+    n_fp_blocks:                             # match pretrained PVDS_PUNet
+    - 1
+    - 2
+    - 1
+    - 1
+    radius:
+    - 0.1
+    - 0.2
+    - 0.4
+    - 0.8
+    out_mlp: 128
+  decoder:
+    local_decoder:
+      num_neighbors: 32                      # increased from 16
+      hidden_dim: 128
+    point_flow:
+      hidden_dim: 384                        # increased from 256
+      k_neighbors:
+      - 4
+      - 8
+      - 16
+
+loss:
+  use_sb_schedule: true
+  sb_schedule:
+    n_timestep: 1000
+    beta_start: 1.e-4
+    beta_end: 0.02
+    symmetric: true
+    objective: pred_noise                    # match pretrained PVDS_PUNet
+    ot_ode: true                             # match pretrained PVDS_PUNet (OT-ODE)
+  point_flow:
+    weight: 0.05                             # reduced: score matching raw magnitude ~20x larger than MSE
+    score_matching:
+      bandwidths: [0.01, 0.02, 0.05]
+      attraction_weight: 1.0
+      coverage_weight: 1.0
+  center_flow:
+    weight: 0.5                              # secondary
+  chamfer:
+    weight: 0.1                              # reduced from 0.3: score matching subsumes some of its role
+  ig_projection:
+    weight: 0.05                             # reduced 0.5→0.05: IGV must not dominate MSE denoising
+    k_neighbors: 16
+    guidance_weight: 0.1                     # for IGV-guided DDPM
+  valuation:
+    weight: 0.005                            # reduced 0.3→0.005: val magnitude ~200x MSE, must be small
+    k_neighbors: 16
+    guidance_weight: 0.05                    # for IGV-guided DDPM
+  igv_subsample_points: 256                  # FPS downsample before IG/VAL (OOM guard)
+  snr_weighting:                             # per-timestep adaptive IGV weights
+    schedule: sigmoid                        # sigmoid | linear | cosine
+    sharpness: 2.0                           # raised 1→2: sharper on/off transition
+    midpoint_snr: 0.3                        # lowered 1.0→0.3: IGV activates at more timesteps
+  mask_pred:
+    weight: 0.0                              # disabled
+  mask_feat:
+    weight: 0.0                              # disabled
+  consistency:
+    weight: 0.0                              # disabled
+  igv_curriculum:                            # epoch-level ramp (orthogonal to SNR)
+    stage1_epochs: 2                         # base losses only
+    stage2_epochs: 8                         # + IG projection
+    stage3_epochs: 15                        # + Valuation
+    stage4_epochs: 200                       # full weights
+
+training:
+  epochs: 200
+  batch_size: 24                             # 26M backbone fits larger batch
+  accumulation_steps: 1
+  skip_decoder: true                         # skip PointFlowDecoder, apply IGV to backbone coarse output
+  full_mse_weight: 1.0                       # weight for full-cloud MSE denoising loss
+  amp: true
+  optimizer:
+    type: AdamW
+    lr: 1.e-5                                    # reduced from 3e-4: fine-tuning pretrained backbone
+    beta1: 0.9
+    beta2: 0.999
+    weight_decay: 1.0e-05
+  scheduler:
+    type: CosineAnnealing
+    lr_gamma: 0.999
+  grad_clip:
+    enabled: true
+    value: 1.0
+  log_interval: 10
+  save_interval: 10
+  seed: 42
+
+sampling:
+  method: ddpm
+  sampling_steps: 10
+  igv_guided: false
+  bs: 32
+
+diffusion:
+  timesteps: 1000
+  sampling_timesteps: 10
+  objective: pred_noise                      # match pretrained PVDS_PUNet
+  schedule: linear
+  sampling_strategy: DDPM
+  loss_type: mse
+  beta_start: 1.e-4
+  beta_end: 0.02
+  t0: 1.e-4
+  T: 1.0
+  ot_ode: true                               # match pretrained PVDS_PUNet
+  symmetric: true

@@ -1,43 +1,87 @@
-.vscode
-plot_superviz
-upsampling
-test
-logs_*
-PiMAE
-MinkowskiEngine
-syn
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+*.so
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+*.out
+*.err
+
+# Data & checkpoints (download separately)
+pretrained/
+checkpoints/
+data/objects/
+output/
+output_objects/
+
+# Experiment outputs (regenerable)
+experiments/results/
+experiments/figures/
+experiments/generalizability/
+experiments/guidance_ablation/
+experiments/multiseed/
+experiments/schedule_ablation/
+figures/score_as_normal/
+figures/metric_calibration/
+figures/*.png
+figures/*.pdf
+figures/*.npz
+!figures/panel_*.py
+
+# Weights & tensors
 *.pt
 *.pth
-*.log
+*.npy
+*.npz
+!figures/panel_*_data.npz
+
+# Media (tracked selectively)
 *.png
 !assets/*.png
 *.ply
-wandb
-*/PVD/output
-__pycache__
-output
-LION
-3d
-ShapeNetCore*
 *.sampling_viz
-build
-*.out
-!PCUpsampling/third_party/ZegCLIP/configs/_base_/datasets
-*.npy
-checkpoints/
-sampling.sh
+
+# Wandb
+wandb/
+
+# Build artifacts
+build/
 *.egg
 *.egg-info
-*.sh
-!scripts/*.sh
-!install.sh
-exported_model
-pyviz3d
-test_room
-*.err
-viz_*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
 logs/
 evaluation/
-output_objects/
-pretrained/
-data/objects
+pyviz3d/
+viz_*
+exported_model/
+test_room/
+ShapeNetCore*
+LION/
+3d/
+MinkowskiEngine/
+syn/
+PiMAE/
+plot_superviz/
+upsampling/
+test/
+
+# Keep shell scripts
+!scripts/*.sh
+!install.sh

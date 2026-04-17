@@ -1,19 +1,30 @@
+# Core
 numpy~=1.26
+torch>=2.1
 loguru
 omegaconf
 einops
-point-cloud-utils
-matplotlib
-trimesh
 ema-pytorch
-multimethod
-scipy
-shortuuid
-scikit-learn
-easydict
-wandb
-pandas
-fpsample
+
+# Geometry & point clouds
+point-cloud-utils
 open3d
-numba
+fpsample
+trimesh
+
+# Metrics & evaluation
+scipy
+scikit-learn
+matplotlib
+tabulate
+pandas
+
+# Training & logging
+wandb
+easydict
+shortuuid
+
+# Build
 ninja
+numba
+multimethod
