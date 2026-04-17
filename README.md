@@ -176,7 +176,7 @@ python denoise_room.py --room_path <ROOM_PATH> --model_path <MODEL_PATH> \
 ## Project Structure
 
 ```
-P2P-Bridge/
+OrthoBridge/
 ├── configs/                    # Training configurations
 ├── models/                     # P2P-Bridge backbone (PVCNN, UNet)
 ├── sb_cover/                   # OrthoBridge module
@@ -189,7 +189,10 @@ P2P-Bridge/
 │   └── training/               #   Training loop
 ├── metrics/                    # Evaluation metrics (CD, EMD, VD, IGSD)
 │   └── geometric_metrics.py    #   Novel VD & IGSD metrics
-├── tools/                      # Ablation & analysis scripts
+├── tools/                      # Evaluation, ablation, plotting & rendering
+│   ├── eval_*.py               #   Ablation & analysis experiments
+│   ├── plot_*.py               #   Paper figure generation
+│   └── render_*.py             #   Point cloud visualization (Mitsuba 3)
 ├── third_party/                # External dependencies (OpenPoints)
 ├── scripts/                    # Shell scripts for reproduction
 ├── train.py                    # Training entry point

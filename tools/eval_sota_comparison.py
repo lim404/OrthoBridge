@@ -24,6 +24,11 @@ Usage:
     PYTHONPATH=. python experiments/sota_comparison.py --skip_denoising  # table from cache
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+
 import argparse
 import json
 import os
