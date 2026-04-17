@@ -18,7 +18,7 @@ if [ ! -f "$CKPT" ]; then
 fi
 
 echo "=============================================="
-echo "  P2P-Bridge / SB-IGV — Full Reproduction"
+echo "  P2P-Bridge / OrthoBridge — Full Reproduction"
 echo "=============================================="
 
 # ── Table 1: Standard evaluation ──

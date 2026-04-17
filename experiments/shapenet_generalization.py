@@ -1,6 +1,6 @@
 """ShapeNet Generalization Evaluation (Stage 3).
 
-Evaluates SB-IGV and orthogonal guidance variants on full ShapeNet categories
+Evaluates OrthoBridge and orthogonal guidance variants on full ShapeNet categories
 (Airplane, Car, Chair — 14,337 shapes total). The model was trained on PUNet,
 so all ShapeNet shapes are unseen data.
 
@@ -41,7 +41,7 @@ CATEGORIES = {
 
 # (name, method_type, lambda, annealing)
 METHOD_CONFIGS = [
-    ("SB-IGV",   "baseline", 0.0, None),
+    ("OrthoBridge",   "baseline", 0.0, None),
     ("Orth-0.1", "orth",     0.1, "linear_decay"),
     ("Orth-0.3", "orth",     0.3, "linear_decay"),
 ]

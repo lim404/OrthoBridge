@@ -1,14 +1,14 @@
 """SOTA Comparison Matrix for Orthogonal Geometric Guidance.
 
 Compares against published baselines from the P2P-Bridge (ECCV 2024) paper.
-Runs SB-IGV baseline and SB-IGV + Orthogonal Guidance using the paper's
+Runs OrthoBridge baseline and OrthoBridge + Orthogonal Guidance using the paper's
 full-object evaluation protocol (patch-based denoising on PUNet test set).
 
 Published baselines (from paper Table 1):
     Bilateral, PCNet, DMR, GLR, ScoreDenoise, MAG, PD-Flow, I-PFN, P2P-Bridge
 
 Our methods (applied to P2P-Bridge backbone):
-    SB-IGV (baseline DDPM sampling)
+    OrthoBridge (baseline DDPM sampling)
     Orth lambda=1.0 (orthogonal guidance, linear decay)
     Orth lambda=2.0 (orthogonal guidance, linear decay)
 
@@ -119,7 +119,7 @@ PUBLISHED_METHODS = [
 # Our methods: (label, guidance_scale, annealing)
 # guidance_scale=None means baseline (no guidance)
 OUR_CONFIGS = [
-    ("SB-IGV", None, None),
+    ("OrthoBridge", None, None),
     ("Orth-0.1", 0.1, "linear_decay"),
     ("Orth-0.3", 0.3, "linear_decay"),
     ("Orth-0.5", 0.5, "linear_decay"),
@@ -128,7 +128,7 @@ OUR_CONFIGS = [
 
 
 # =========================================================================== #
-#  Patch-based denoising for SB-IGV model
+#  Patch-based denoising for OrthoBridge model
 # =========================================================================== #
 
 def patch_based_denoise_sbigv(
@@ -144,14 +144,14 @@ def patch_based_denoise_sbigv(
     grad_clip=2.0,
     batch_size=16,
 ):
-    """Patch-based denoising using SB-IGV model.
+    """Patch-based denoising using OrthoBridge model.
 
     Mirrors the P2P-Bridge evaluate_objects.py patch extraction +
     reassembly pipeline, but substitutes ddpm_denoise (or ortho-guided
     variant) for the model.sample() call.
 
     Args:
-        model: BridgeFlowModel (SB-IGV).
+        model: BridgeFlowModel (OrthoBridge).
         sb_schedule: SBSchedule instance.
         pcl_noisy: (N, 3) noisy point cloud on GPU, unit-sphere normalized.
         patch_size: Points per patch (default 2048, matches P2P-Bridge).
@@ -666,7 +666,7 @@ def main():
     all_results = {}
 
     if not args.skip_denoising:
-        # Load SB-IGV model
+        # Load OrthoBridge model
         from sb_cover.training.trainer_igv import TrainerIGV
         from sb_cover.evaluation.guided_sampling import GeometricQualityLoss
 

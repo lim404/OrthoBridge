@@ -1,4 +1,4 @@
-"""Training entry-point for SB-IGV model.
+"""Training entry-point for OrthoBridge model.
 
 Usage:
     python train_sb_igv.py --config configs/shapenet_denoise_sb_igv.yaml \
@@ -29,7 +29,7 @@ def set_seed(seed: int):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train SB-IGV model")
+    parser = argparse.ArgumentParser(description="Train OrthoBridge model")
     parser.add_argument(
         "--config",
         type=str,

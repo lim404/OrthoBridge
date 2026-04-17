@@ -1,4 +1,4 @@
-"""IGV Trainer: Training loop for SB-IGV model.
+"""IGV Trainer: Training loop for OrthoBridge model.
 
 Supports both legacy flow matching and Schrödinger Bridge noise schedule.
 When use_sb_schedule=True, uses discrete timesteps, SB forward process,
@@ -27,7 +27,7 @@ from models.unet_pvc import PVCNN2Unet
 
 
 class TrainerIGV:
-    """Training loop for SB-IGV model.
+    """Training loop for OrthoBridge model.
 
     Args:
         cfg: Full configuration dict.

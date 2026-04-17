@@ -15,7 +15,7 @@ IntegralGeometrySignatureDistance (IGSD)
 
 References
 ----------
-Section 4.2 of the SB-IGV paper (ECCV 2024).
+Section 4.2 of the OrthoBridge paper (ECCV 2024).
 """
 
 from typing import Optional, Sequence, Tuple, Union

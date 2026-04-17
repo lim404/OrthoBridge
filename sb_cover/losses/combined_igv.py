@@ -1,4 +1,4 @@
-"""Combined IGV Loss with Geometric Manifold Correction for SB-IGV model.
+"""Combined IGV Loss with Geometric Manifold Correction for OrthoBridge model.
 
 The standard Schrödinger Bridge assumes transport in Euclidean R^{3N}.
 Real point clouds occupy a low-dimensional geometric manifold M ⊂ R^{3N}.

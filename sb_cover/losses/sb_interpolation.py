@@ -1,6 +1,6 @@
-"""Schrödinger Bridge noise schedule for SB-IGV model.
+"""Schrödinger Bridge noise schedule for OrthoBridge model.
 
-Ported from P2P-Bridge/models/p2pb.py with modifications for the SB-IGV framework.
+Ported from P2P-Bridge/models/p2pb.py with modifications for the OrthoBridge framework.
 Implements symmetric sqrt-linear beta schedule, forward process q_sample,
 ground truth computation, and reverse posterior for DDPM sampling.
 """

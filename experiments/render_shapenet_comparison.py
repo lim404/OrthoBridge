@@ -1,7 +1,7 @@
-"""Mitsuba 3 visualization of ShapeNet denoising: SB-IGV vs Orthogonal Guidance.
+"""Mitsuba 3 visualization of ShapeNet denoising: OrthoBridge vs Orthogonal Guidance.
 
 Renders a 5-row x 5-column grid figure:
-    Columns: GT | Noisy | SB-IGV | Orth-0.1 | Orth-0.3
+    Columns: GT | Noisy | OrthoBridge | Orth-0.1 | Orth-0.3
     Rows:    5 diverse ShapeNet shapes (Airplane, Airplane, Car, Chair, Chair)
 
 Each panel is colored by per-point NN distance to GT (green=low error, red=high),
@@ -51,7 +51,7 @@ SHAPE_SELECTIONS = [
 ]
 
 METHOD_CONFIGS = [
-    ("SB-IGV",   "baseline", 0.0, None),
+    ("OrthoBridge",   "baseline", 0.0, None),
     ("Orth-0.1", "orth",     0.1, "linear_decay"),
     ("Orth-0.3", "orth",     0.3, "linear_decay"),
 ]

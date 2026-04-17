@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">P2P-Bridge: Diffusion Bridges for 3D Point Cloud Denoising</h1>
+  <h1 align="center">OrthoBridge: Orthogonal Geometric Guidance for<br>Geometry-Preserving Point Cloud Diffusion Bridges</h1>
   <p align="center">
     <a href="https://matvogel.github.io">Mathias Vogel</a><sup>1</sup>,
     <a href="https://scholar.google.com/citations?user=ml3laqEAAAAJ">Keisuke Tateno</a><sup>2</sup>,
@@ -25,7 +25,7 @@
   <img src="./assets/overview.png" width="100%">
 </p>
 
-**P2P-Bridge** introduces a novel framework for 3D point cloud denoising by adapting Diffusion Schr&ouml;dinger Bridges to learn an optimal transport plan between noisy and clean point sets. We further propose **SB-IGV** (Schr&ouml;dinger Bridge with Integral Geometry Validation), which enhances P2P-Bridge with:
+**OrthoBridge** proposes orthogonal geometric guidance for geometry-preserving point cloud diffusion bridges. Built on [P2P-Bridge](https://github.com/matvogel/P2P-Bridge) (ECCV 2024), which adapts Diffusion Schr&ouml;dinger Bridges for point cloud denoising, OrthoBridge introduces:
 
 - **Orthogonal Gradient Projection Guidance** &mdash; training-free geometric guidance that projects quality gradients orthogonal to the denoising score direction, improving surface uniformity (VD) without degrading silhouette consistency (IGSD).
 - **Novel evaluation metrics** &mdash; Valuation Difference (VD) and Integral Geometry Signature Distance (IGSD) for detecting morphological shrinkage and topological breaks that standard CD/EMD miss.
@@ -104,7 +104,7 @@ pretrained/
 # PU-Net denoising (small model)
 python train.py --config configs/PVDS_PUNet.yaml --save_dir checkpoints/punet
 
-# SB-IGV training (on pretrained P2P-Bridge backbone)
+# OrthoBridge training (on pretrained P2P-Bridge backbone)
 python train_sb_igv.py --config configs/shapenet_denoise_sb_igv.yaml
 ```
 
@@ -179,7 +179,7 @@ python denoise_room.py --room_path <ROOM_PATH> --model_path <MODEL_PATH> \
 P2P-Bridge/
 ├── configs/                    # Training configurations
 ├── models/                     # P2P-Bridge backbone (PVCNN, UNet)
-├── sb_cover/                   # SB-IGV module
+├── sb_cover/                   # OrthoBridge module
 │   ├── data/                   #   Data loading (PU-Net patches)
 │   ├── evaluation/             #   Sampling & guided inference
 │   │   ├── ddpm_sampling.py    #     DDPM reverse process
@@ -193,7 +193,7 @@ P2P-Bridge/
 ├── third_party/                # External dependencies (OpenPoints)
 ├── scripts/                    # Shell scripts for reproduction
 ├── train.py                    # Training entry point
-├── train_sb_igv.py             # SB-IGV training
+├── train_sb_igv.py             # OrthoBridge training
 ├── evaluate_objects.py         # Object evaluation
 ├── evaluate_rooms.py           # Scene evaluation
 ├── denoise_object.py           # Single-object inference
@@ -217,11 +217,11 @@ This project extends [**P2P-Bridge**](https://github.com/matvogel/P2P-Bridge) (V
 
 | Directory / File | Contribution |
 |---|---|
-| `sb_cover/` | SB-IGV framework: bridge model, guided sampling, orthogonal projection, IGV losses, training loop |
+| `sb_cover/` | OrthoBridge framework: bridge model, guided sampling, orthogonal projection, IGV losses, training loop |
 | `metrics/geometric_metrics.py` | Novel VD and IGSD metrics |
 | `tools/` | All ablation and analysis scripts |
-| `configs/shapenet_denoise_sb_igv.yaml` | SB-IGV training configuration |
-| `train_sb_igv.py` | SB-IGV training entry point |
+| `configs/shapenet_denoise_sb_igv.yaml` | OrthoBridge training configuration |
+| `train_sb_igv.py` | OrthoBridge training entry point |
 | `scripts/reproduce_all.sh` | One-command reproduction |
 
 ## Citation

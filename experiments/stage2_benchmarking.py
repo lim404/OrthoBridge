@@ -1,4 +1,4 @@
-"""Stage 2: Main Benchmarking — P2P-Bridge vs SB-IGV.
+"""Stage 2: Main Benchmarking — P2P-Bridge vs OrthoBridge.
 
 Runs both denoisers on PUNet test set across resolutions and noise levels,
 computing CD, P2F, VD, and IGSD metrics. Produces per-shape JSON results,
@@ -6,7 +6,7 @@ summary CSV, and LaTeX table for the paper.
 
 Usage:
     python experiments/stage2_benchmarking.py --device cuda:0
-    python experiments/stage2_benchmarking.py --skip_p2pb       # SB-IGV only
+    python experiments/stage2_benchmarking.py --skip_p2pb       # OrthoBridge only
     python experiments/stage2_benchmarking.py --skip_sbigv      # P2P-Bridge only
     python experiments/stage2_benchmarking.py --resolutions 10000 --noises 0.01  # smoke test
 """
@@ -126,11 +126,11 @@ class P2PBridgeDenoiser:
 
 
 # =========================================================================== #
-#  SB-IGV Denoiser
+#  OrthoBridge Denoiser
 # =========================================================================== #
 
 class SBIGVDenoiser:
-    """Wrapper around SB-IGV for DDPM-based denoising."""
+    """Wrapper around OrthoBridge for DDPM-based denoising."""
 
     def __init__(
         self,
@@ -151,7 +151,7 @@ class SBIGVDenoiser:
         self.trainer.model.eval()
 
         self.sb_schedule = self.trainer.sb_schedule
-        logger.info("SB-IGV loaded from {}", ckpt_path)
+        logger.info("OrthoBridge loaded from {}", ckpt_path)
 
     @torch.no_grad()
     def __call__(self, pcl_noisy: Tensor) -> Tensor:
@@ -510,7 +510,7 @@ def generate_latex_table(
 # =========================================================================== #
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Stage 2: P2P-Bridge vs SB-IGV Benchmarking")
+    parser = argparse.ArgumentParser(description="Stage 2: P2P-Bridge vs OrthoBridge Benchmarking")
     parser.add_argument("--device", type=str, default="cuda:0")
     parser.add_argument(
         "--dataset_root", type=str,
@@ -524,7 +524,7 @@ def parse_args():
     )
     parser.add_argument("--output_dir", type=str, default="experiments/results/stage2")
     parser.add_argument("--skip_p2pb", action="store_true", help="Skip P2P-Bridge evaluation")
-    parser.add_argument("--skip_sbigv", action="store_true", help="Skip SB-IGV evaluation")
+    parser.add_argument("--skip_sbigv", action="store_true", help="Skip OrthoBridge evaluation")
     parser.add_argument(
         "--shapes", type=str, nargs="*", default=None,
         help="Subset of shape names to evaluate (default: all)",
@@ -535,7 +535,7 @@ def parse_args():
     parser.add_argument("--p2pb_steps", type=int, default=5)
     parser.add_argument("--p2pb_seed_k", type=int, default=3)
 
-    # SB-IGV args
+    # OrthoBridge args
     parser.add_argument("--sbigv_config", type=str, default="configs/shapenet_denoise_sb_igv.yaml")
     parser.add_argument("--sbigv_ckpt", type=str, default="checkpoints/sb_igv/epoch_29.pth")
     parser.add_argument("--sbigv_steps", type=int, default=10)
@@ -588,10 +588,10 @@ def main():
         del p2pb
         torch.cuda.empty_cache()
 
-    # --- SB-IGV ---
+    # --- OrthoBridge ---
     if not args.skip_sbigv:
         logger.info("=" * 60)
-        logger.info("Evaluating SB-IGV")
+        logger.info("Evaluating OrthoBridge")
         logger.info("=" * 60)
 
         sbigv = SBIGVDenoiser(
@@ -602,7 +602,7 @@ def main():
         )
 
         sbigv_results = run_benchmark(
-            denoiser_name="SB-IGV",
+            denoiser_name="OrthoBridge",
             denoiser=sbigv,
             dataset_root=args.dataset_root,
             resolutions=args.resolutions,
@@ -611,9 +611,9 @@ def main():
             shapes=args.shapes,
         )
 
-        save_results(sbigv_results, "SB-IGV", args.output_dir)
-        summaries["SB-IGV"] = aggregate_results(sbigv_results)
-        summaries["SB-IGV"].insert(0, "model", "SB-IGV")
+        save_results(sbigv_results, "OrthoBridge", args.output_dir)
+        summaries["OrthoBridge"] = aggregate_results(sbigv_results)
+        summaries["OrthoBridge"].insert(0, "model", "OrthoBridge")
 
         del sbigv
         torch.cuda.empty_cache()
